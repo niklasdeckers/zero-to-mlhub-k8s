@@ -49,8 +49,7 @@ spec:
       containers:
         - name: chp
           image: {{ .Values.proxy.chp.image.name }}:{{ .Values.proxy.chp.image.tag }}
-          command:
-            - configurable-http-proxy
+          args:
             - --ip=0.0.0.0
             - --api-ip=0.0.0.0
             - --api-port=8001
@@ -91,6 +90,14 @@ spec:
                 secretKeyRef:
                   name: hub-secret
                   key: proxy.token
+            - name: SSHD_TARGET
+              value: hub:22
+            - name: START_SSH
+              value: false
+            - name: START_JHUB
+              value: false
+            - name: START_CHP
+              value: true
           {{- with .Values.proxy.chp.image.pullPolicy }}
           imagePullPolicy: {{ . }}
           {{- end }}

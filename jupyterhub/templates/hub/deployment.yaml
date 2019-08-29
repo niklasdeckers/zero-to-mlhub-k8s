@@ -69,8 +69,7 @@ spec:
         {{- end }}
         - name: hub
           image: {{ .Values.hub.image.name }}:{{ .Values.hub.image.tag }}
-          command:
-            - jupyterhub
+          args:
             - --config
             - /srv/jupyterhub_config.py
             {{- if .Values.debug.enabled }}
@@ -121,6 +120,10 @@ spec:
             # Don't allow any process to execute as root inside the container
             allowPrivilegeEscalation: false
           env:
+            - name: START_NGINX
+              value: false
+            - name: EXECUTION_MODE
+              value: "k8s"
             - name: PYTHONUNBUFFERED
               value: "1"
             - name: HELM_RELEASE_NAME
@@ -179,6 +182,8 @@ spec:
           ports:
             - containerPort: 8081
               name: hub
+            - containerPort: 22
+              name: ssh
           ## livenessProbe notes:
           ## We don't know how long hub database upgrades could take
           ## so having a liveness probe could be a bit risky unless we put

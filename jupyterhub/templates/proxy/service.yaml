@@ -48,7 +48,7 @@ spec:
       {{- if $autoHTTPS }}
       targetPort: 80
       {{- else }}
-      targetPort: 8000
+      targetPort: 8091
       {{- end }}
       # allow proxy.service.nodePort for http
       {{- if .Values.proxy.service.nodePorts.http }}
