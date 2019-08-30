@@ -55,28 +55,29 @@ spec:
             - --api-port=8001
             - --default-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)
             - --error-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)/hub/error
-            {{- if $manualHTTPS }}
-            - --port=8443
-            - --redirect-port=8000
-            - --redirect-to=443
-            - --ssl-key=/etc/chp/tls/tls.key
-            - --ssl-cert=/etc/chp/tls/tls.crt
-            {{- else if $manualHTTPSwithsecret }}
-            - --port=8443
-            - --redirect-port=8000
-            - --redirect-to=443
-            - --ssl-key=/etc/chp/tls/{{ .Values.proxy.https.secret.key }}
-            - --ssl-cert=/etc/chp/tls/{{ .Values.proxy.https.secret.crt }}
-            {{- else }}
+            # {{- if $manualHTTPS }}
+            # - --port=8443
+            # - --redirect-port=8000
+            # - --redirect-to=443
+            # - --ssl-key=/etc/chp/tls/tls.key
+            # - --ssl-cert=/etc/chp/tls/tls.crt
+            # {{- else if $manualHTTPSwithsecret }}
+            # - --port=8443
+            # - --redirect-port=8000
+            # - --redirect-to=443
+            # - --ssl-key=/etc/chp/tls/{{ .Values.proxy.https.secret.key }}
+            # - --ssl-cert=/etc/chp/tls/{{ .Values.proxy.https.secret.crt }}
+            # {{- else }}
             - --port=8000
-            {{- end }}
+            # {{- end }}
             {{- if .Values.debug.enabled }}
             - --log-level=debug
             {{- end }}
           {{- if or $manualHTTPS $manualHTTPSwithsecret }}
           volumeMounts:
             - name: tls-secret
-              mountPath: /etc/chp/tls
+              # mountPath: /etc/chp/tls
+              mountPath: /resources/ssl
               readOnly: true
           {{- end }}
           resources:
