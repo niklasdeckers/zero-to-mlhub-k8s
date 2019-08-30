@@ -63,7 +63,7 @@ spec:
       {{- else if $offloadHTTPS }}
       targetPort: 8000
       {{- else }}
-      targetPort: 443
+      targetPort: 8091
       {{- end }}
       {{- if .Values.proxy.service.nodePorts.https }}
       nodePort: {{ .Values.proxy.service.nodePorts.https }}
