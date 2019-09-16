@@ -20,7 +20,7 @@ spec:
               hub.jupyter.org/network-access-singleuser: "true"
       ports:
         - protocol: TCP
-          port: 8888
+          port: 8080
   egress:
     - to:
         - podSelector:
