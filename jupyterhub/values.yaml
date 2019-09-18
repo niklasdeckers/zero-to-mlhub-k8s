@@ -123,7 +123,7 @@ proxy:
       crt: cert.crt
     hosts: []
   networkPolicy:
-    enabled: true
+    enabled: false
     egress:
       - to:
           - ipBlock:
@@ -171,7 +171,7 @@ singleuser:
     enabled: false
     ip: 169.254.169.254
   networkPolicy:
-    enabled: false
+    enabled: true
     egress:
     # Required egress is handled by other rules so it's safe to modify this
       - to:
