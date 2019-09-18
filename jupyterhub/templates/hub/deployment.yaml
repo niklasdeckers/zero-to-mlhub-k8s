@@ -71,7 +71,7 @@ spec:
           image: {{ .Values.hub.image.name }}:{{ .Values.hub.image.tag }}
           args:
             - --config
-            - /srv/jupyterhub_config.py
+            - /resources/jupyterhub_config.py
             {{- if .Values.debug.enabled }}
             - --debug
             {{- end }}
