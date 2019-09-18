@@ -11,8 +11,8 @@ hub:
   cookieSecret:
   publicURL:
   initContainers: []
-  uid: 1000
-  fsGid: 1000
+  uid: 0
+  fsGid: 0
   nodeSelector: {}
   concurrentSpawnLimit: 64
   consecutiveFailureLimit: 5
@@ -66,7 +66,7 @@ hub:
       - to:
           - ipBlock:
               cidr: 0.0.0.0/0
-  allowNamedServers: false
+  allowNamedServers: true
 
 
 rbac:
@@ -187,8 +187,8 @@ singleuser:
   lifecycleHooks: {}
   initContainers: []
   extraContainers: []
-  uid: 1000
-  fsGid: 100
+  uid: 0
+  fsGid: 0
   serviceAccountName:
   storage:
     type: dynamic
