@@ -131,7 +131,9 @@ proxy:
 
 
 auth:
-  type: dummy
+  type: custom
+  custom:
+    className: nativeauthenticator.NativeAuthenticator
   whitelist:
     users:
   admin:
