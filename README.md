@@ -1,17 +1,27 @@
-# Zero to JupyterHub with Kubernetes
+# Zero to MLHub with Kubernetes
 
-[![Build Status](https://travis-ci.org/jupyterhub/zero-to-jupyterhub-k8s.svg?branch=master)](https://travis-ci.org/jupyterhub/zero-to-jupyterhub-k8s)
-[![Documentation Status](https://readthedocs.org/projects/zero-to-jupyterhub/badge/?version=latest)](https://zero-to-jupyterhub.readthedocs.io/en/latest/?badge=latest)
-[![Latest stable release](https://img.shields.io/badge/dynamic/json.svg?label=stable&url=https://jupyterhub.github.io/helm-chart/info.json&query=$.jupyterhub.stable&colorB=orange)](https://jupyterhub.github.io/helm-chart/)
-[![Latest development release](https://img.shields.io/badge/dynamic/json.svg?label=dev&url=https://jupyterhub.github.io/helm-chart/info.json&query=$.jupyterhub.latest&colorB=orange)](https://jupyterhub.github.io/helm-chart/)
-[![GitHub](https://img.shields.io/badge/issue_tracking-github-blue.svg)](https://github.com/jupyterhub/zero-to-jupyterhub-k8s/issues)
-[![Discourse](https://img.shields.io/badge/help_forum-discourse-blue.svg)](https://discourse.jupyter.org/c/jupyterhub/z2jh-k8s)
-[![Gitter](https://img.shields.io/badge/social_chat-gitter-blue.svg)](https://gitter.im/jupyterhub/jupyterhub)
+This repo contains a *Helm chart* for [MLHub](https://github.com/ml-tooling/ml-hub) and a guide to use it. Together,
+they allow you to make a JupyterHub available to a very large group of users such as the staff and students of a university.
 
+## MLHub Modifications
 
-This repo contains a *Helm chart* for JupyterHub and a guide to use it. Together
-they allow you to make a JupyterHub available to a very large group of users
-such as the staff and students of a university.
+In this repo, we made some modifications to the forked repo and its helm chart and default values so that it works with the [ml-hub](https://github.com/ml-tooling/ml-hub) and [ml-workspace](https://github.com/ml-tooling/ml-workspace) images. Hence, we do not use the hub or singleuser-sample image in the images/ directory.
+For most parts you should be able to follow the comprehensive guide linked below.
+
+Most prominent changes: 
+- change of the command fields in hub and proxy yamls
+- modifying ports to make tunnelling of ssh possible
+- changes of default values, e.g. the used images
+
+We do not push the helm chart to a repository for now, so feel free to download it from the [mlhub releases page](https://github.com/ml-tooling/ml-hub/releases) or to create the package yourself via `helm package jupyterhub/`.
+
+You can then deploy the chart via `helm upgrade --install mlhub packaged-chart.tgz --namespace $namespace --values config.yaml`.
+The config.yaml can be used to overrride default values.
+
+---
+<br/>
+
+# Original Readme:
 
 ## The guide
 
