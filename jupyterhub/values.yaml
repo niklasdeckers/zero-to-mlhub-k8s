@@ -199,7 +199,7 @@ singleuser:
       pvcName:
       subPath: '{username}'
     capacity: 10Gi
-    homeMountPath: /home/jovyan
+    homeMountPath: /workspace
     dynamic:
       storageClass:
       pvcNameTemplate: claim-{username}{servername}
