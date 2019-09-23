@@ -45,7 +45,7 @@ hub:
   extraVolumeMounts: []
   image:
     name: mltooling/ml-hub
-    tag: '0.1.4'
+    tag: '0.1.5'
   resources:
     requests:
       cpu: 200m
@@ -86,7 +86,7 @@ proxy:
   chp:
     image:
       name: mltooling/ml-hub
-      tag: 0.1.4
+      tag: 0.1.5
     resources:
       requests:
         cpu: 200m
@@ -209,6 +209,7 @@ singleuser:
     name: mltooling/ml-workspace
     tag: '0.8.3'
     pullPolicy: IfNotPresent
+  workspaceImages:
   imagePullSecret:
     enabled: false
     registry:
