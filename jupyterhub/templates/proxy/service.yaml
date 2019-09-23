@@ -59,7 +59,7 @@ spec:
       port: 443
       protocol: TCP
       {{- if or $manualHTTPS $manualHTTPSwithsecret }}
-      targetPort: 8443
+      targetPort: 8091
       {{- else if $offloadHTTPS }}
       targetPort: 8000
       {{- else }}
