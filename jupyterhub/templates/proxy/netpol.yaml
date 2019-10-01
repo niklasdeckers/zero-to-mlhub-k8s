@@ -29,7 +29,7 @@ spec:
       {{- if or $manualHTTPS $manualHTTPSwithsecret}}
       - protocol: TCP
         port: 8443
-        # probably change the port to 8091 as we also changed it within the proxy deployment.yaml
+        # probably change the port to 8080 as we also changed it within the proxy deployment.yaml
       {{- end }}
       # kube-lego /healthz
       - protocol: TCP

@@ -106,10 +106,10 @@ spec:
           {{- end }}
           ports:
             {{- if or $manualHTTPS $manualHTTPSwithsecret }}
-            - containerPort: 8091
+            - containerPort: 8080
               name: proxy-https
             {{- end }}
-            - containerPort: 8091
+            - containerPort: 8080
               name: proxy-public
             - containerPort: 8001
               name: api
