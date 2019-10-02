@@ -53,6 +53,7 @@ spec:
         - name: {{ if .hook -}} hook- {{- end -}} singleuser-image-credentials
       {{- end }}
       initContainers:
+        {{- if .Values.singleuser.image.name }}}
         - name: image-pull-singleuser
           image: {{ .Values.singleuser.image.name }}:{{ .Values.singleuser.image.tag }}
           {{- with .Values.singleuser.image.pullPolicy }}
@@ -65,6 +66,7 @@ spec:
         {{- range $k, $container := .Values.singleuser.profileList }}
         {{- if $container.kubespawner_override }}
         {{- if $container.kubespawner_override.image }}
+        {{- end }}}
         - name: image-pull-singleuser-profilelist-{{ $k }}
           image: {{ $container.kubespawner_override.image }}
           command:

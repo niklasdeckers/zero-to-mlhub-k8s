@@ -206,9 +206,9 @@ singleuser:
       volumeNameTemplate: volume-{username}{servername}
       storageAccessModes: [ReadWriteOnce]
   image:
-    name: mltooling/ml-workspace
-    tag: '0.8.3'
-    pullPolicy: IfNotPresent
+    name:
+    tag:
+    pullPolicy:
   workspaceImages:
   imagePullSecret:
     enabled: false
