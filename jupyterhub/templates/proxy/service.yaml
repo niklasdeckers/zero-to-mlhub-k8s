@@ -48,7 +48,7 @@ spec:
       {{- if $autoHTTPS }}
       targetPort: 80
       {{- else }}
-      targetPort: 8091
+      targetPort: 8080
       {{- end }}
       # allow proxy.service.nodePort for http
       {{- if .Values.proxy.service.nodePorts.http }}
@@ -59,11 +59,11 @@ spec:
       port: 443
       protocol: TCP
       {{- if or $manualHTTPS $manualHTTPSwithsecret }}
-      targetPort: 8443
+      targetPort: 8080
       {{- else if $offloadHTTPS }}
       targetPort: 8000
       {{- else }}
-      targetPort: 8091
+      targetPort: 8080
       {{- end }}
       {{- if .Values.proxy.service.nodePorts.https }}
       nodePort: {{ .Values.proxy.service.nodePorts.https }}
