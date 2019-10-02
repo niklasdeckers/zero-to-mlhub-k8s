@@ -69,32 +69,6 @@ spec:
         {{- end }}
         - name: hub
           image: {{ .Values.hub.image.name }}:{{ .Values.hub.image.tag }}
-          args:
-            - --config
-            - /resources/jupyterhub_config.py
-            {{- if .Values.debug.enabled }}
-            - --debug
-            {{- end }}
-            {{- /*
-            We want to do automatic upgrades for sqlite-pvc by default, but
-            allow users to opt out of that if they want. Users using their own
-            db need to 'opt in' Go Templates treat nil and "" and false as
-            'false', making this code complex. We can probably make this a
-            one-liner, but doing combinations of boolean vars in go templates is
-            very inelegant & hard to reason about.
-            */}}
-            {{- $upgradeType := typeOf .Values.hub.db.upgrade }}
-            {{- if eq $upgradeType "bool" }}
-            {{- /* .Values.hub.db.upgrade has been explicitly set to true or false */}}
-            {{- if .Values.hub.db.upgrade }}
-            - --upgrade-db
-            {{- end }}
-            {{- else if eq $upgradeType "<nil>" }}
-            {{- /* .Values.hub.db.upgrade is nil */}}
-            {{- if eq .Values.hub.db.type "sqlite-pvc" }}
-            - --upgrade-db
-            {{- end }}
-            {{- end }}
           volumeMounts:
             - mountPath: /etc/jupyterhub/config/
               name: config
@@ -120,6 +94,32 @@ spec:
             # Don't allow any process to execute as root inside the container
             allowPrivilegeEscalation: false
           env:
+            - name: ADDITIONAL_ARGS
+                {{- $args := "--config /resources/jupyterhub_config.py" }}
+                {{- if .Values.debug.enabled }}
+                {{- $args = printf "%s %s" $args "--debug" }}
+                {{- end }}
+                {{- /*
+                We want to do automatic upgrades for sqlite-pvc by default, but
+                allow users to opt out of that if they want. Users using their own
+                db need to 'opt in' Go Templates treat nil and "" and false as
+                'false', making this code complex. We can probably make this a
+                one-liner, but doing combinations of boolean vars in go templates is
+                very inelegant & hard to reason about.
+                */}}
+                {{- $upgradeType := typeOf .Values.hub.db.upgrade }}
+                {{- if eq $upgradeType "bool" }}
+                {{- /* .Values.hub.db.upgrade has been explicitly set to true or false */}}
+                {{- if .Values.hub.db.upgrade }}
+                {{- $args = printf "%s %s" $args "--upgrade-db" }}
+                {{- end }}
+                {{- else if eq $upgradeType "<nil>" }}
+                {{- /* .Values.hub.db.upgrade is nil */}}
+                {{- if eq .Values.hub.db.type "sqlite-pvc" }}
+                {{- $args = printf "%s %s" $args "--upgrade-db" }}
+                {{- end }}
+                {{- end }}
+              value: {{ $args | quote }}
             - name: START_NGINX
               value: "false"
             - name: EXECUTION_MODE
@@ -194,9 +194,9 @@ spec:
           # livenessProbe:
           #   initialDelaySeconds: 30
           #   httpGet:
-          #     path: {{ .Values.hub.baseUrl }}hub/health
+          #     path: {{ .Values.hub.baseUrl }}/hub/health
           #     port: hub
           readinessProbe:
             httpGet:
-              path: {{ .Values.hub.baseUrl }}hub/health
+              path: {{ .Values.hub.baseUrl }}/hub/health
               port: hub
