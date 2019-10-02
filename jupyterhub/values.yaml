@@ -208,7 +208,7 @@ singleuser:
       storageAccessModes: [ReadWriteOnce]
   image:
     name: mltooling/ml-workspace
-    tag: 0.8.6
+    tag: '0.8.6'
     pullPolicy: IfNotPresent
   workspaceImages:
   imagePullSecret:
