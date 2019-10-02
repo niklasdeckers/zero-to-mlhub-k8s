@@ -49,30 +49,6 @@ spec:
       containers:
         - name: chp
           image: {{ .Values.proxy.chp.image.name }}:{{ .Values.proxy.chp.image.tag }}
-          args:
-            - --ip=0.0.0.0
-            - --api-ip=0.0.0.0
-            - --api-port=8001
-            - --default-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)
-            - --error-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)/hub/error
-            # {{- if $manualHTTPS }}
-            # - --port=8443
-            # - --redirect-port=8000
-            # - --redirect-to=443
-            # - --ssl-key=/etc/chp/tls/tls.key
-            # - --ssl-cert=/etc/chp/tls/tls.crt
-            # {{- else if $manualHTTPSwithsecret }}
-            # - --port=8443
-            # - --redirect-port=8000
-            # - --redirect-to=443
-            # - --ssl-key=/etc/chp/tls/{{ .Values.proxy.https.secret.key }}
-            # - --ssl-cert=/etc/chp/tls/{{ .Values.proxy.https.secret.crt }}
-            # {{- else }}
-            - --port=8000
-            # {{- end }}
-            {{- if .Values.debug.enabled }}
-            - --log-level=debug
-            {{- end }}
           {{- if or $manualHTTPS $manualHTTPSwithsecret }}
           volumeMounts:
             - name: tls-secret
@@ -86,6 +62,12 @@ spec:
             # Don't allow any process to execute as root inside the container
             allowPrivilegeEscalation: false
           env:
+            - name: ADDITIONAL_ARGS
+              {{- $args := "--ip=0.0.0.0 --api-ip=0.0.0.0 --api-port=8001 --port=8000 --default-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT) --error-target=http://$(HUB_SERVICE_HOST):$(HUB_SERVICE_PORT)/hub/error" }}
+              {{- if .Values.debug.enabled }}
+              {{- $args = printf "%s %s" $args "--log-level=debug" }}
+              {{- end }}
+              value: {{ $args | quote }}
             - name: CONFIGPROXY_AUTH_TOKEN
               valueFrom:
                 secretKeyRef:
@@ -101,15 +83,28 @@ spec:
               value: "false"
             - name: START_CHP
               value: "true"
+            {{- if .Values.proxy.extraEnv }}
+            {{- $extraEnvType := typeOf .Values.proxy.extraEnv }}
+            {{- /* If we have a list, embed that here directly. This allows for complex configuration from configmap, downward API, etc. */}}
+            {{- if eq $extraEnvType "[]interface {}" }}
+            {{- .Values.proxy.extraEnv | toYaml | trimSuffix "\n" | nindent 12 }}
+            {{- else if eq $extraEnvType "map[string]interface {}" }}
+            {{- /* If we have a map, treat those as key-value pairs. */}}
+            {{- range $key, $value := .Values.proxy.extraEnv }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- end }}
+            {{- end }}
           {{- with .Values.proxy.chp.image.pullPolicy }}
           imagePullPolicy: {{ . }}
           {{- end }}
           ports:
             {{- if or $manualHTTPS $manualHTTPSwithsecret }}
-            - containerPort: 8080
+            - containerPort: 8443
               name: proxy-https
             {{- end }}
-            - containerPort: 8080
+            - containerPort: 8000
               name: proxy-public
             - containerPort: 8001
               name: api
