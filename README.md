@@ -12,6 +12,7 @@ Most prominent changes:
 - change of the command fields in hub and proxy yamls
 - modifying ports to make tunnelling of ssh possible
 - changes of default values, e.g. the used images
+- changes of paths, e.g. the ssl secret mount path
 
 We do not push the helm chart to a repository for now, so feel free to download it from the [mlhub releases page](https://github.com/ml-tooling/ml-hub/releases) or to create the package yourself via `helm package jupyterhub/`.
 
