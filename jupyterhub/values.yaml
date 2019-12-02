@@ -45,7 +45,7 @@ hub:
   extraVolumeMounts: []
   image:
     name: mltooling/ml-hub
-    tag: '0.1.7'
+    tag: '0.1.10'
   resources:
     requests:
       cpu: 200m
@@ -86,7 +86,7 @@ proxy:
   chp:
     image:
       name: mltooling/ml-hub
-      tag: 0.1.7
+      tag: 0.1.10
     resources:
       requests:
         cpu: 200m
