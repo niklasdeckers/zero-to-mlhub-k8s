@@ -45,7 +45,7 @@ hub:
   extraVolumeMounts: []
   image:
     name: mltooling/ml-hub
-    tag: '0.1.10'
+    tag: '0.1.11'
   resources:
     requests:
       cpu: 200m
@@ -86,7 +86,7 @@ proxy:
   chp:
     image:
       name: mltooling/ml-hub
-      tag: 0.1.10
+      tag: 0.1.11
     resources:
       requests:
         cpu: 200m
@@ -200,7 +200,7 @@ singleuser:
       pvcName:
       subPath: '{username}'
     capacity: 10Gi
-    homeMountPath: /workspace
+    homeMountPath: /workspace/persisted
     dynamic:
       storageClass:
       pvcNameTemplate: claim-{username}{servername}
